@@ -62,7 +62,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.apache.commons.validator.routines.UrlValidator;
 import com._17od.upm.crypto.InvalidPasswordException;
 import com._17od.upm.database.AccountInformation;
 import com._17od.upm.database.ProblemReadingDatabaseFile;
@@ -70,6 +69,7 @@ import com._17od.upm.platformspecific.PlatformSpecificCode;
 import com._17od.upm.util.Preferences;
 import com._17od.upm.util.Translator;
 import com._17od.upm.util.Util;
+import org.apache.commons.validator.routines.UrlValidator;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

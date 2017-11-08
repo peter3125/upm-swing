@@ -16,7 +16,6 @@ sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -27,7 +26,8 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: apacheHttpclientVersion
     compile group: 'commons-logging', name: 'commons-logging', version: commonsLoggingVersion
     compile group: 'commons-validator', name: 'commons-validator', version: commonsValidatorVersion
-    //compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: javaCSVVersion
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: commonsHttpClientVersion
+    compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: javaCSVVersion
 
     testCompile group: 'junit', name: 'junit', version: junitVersion
 }

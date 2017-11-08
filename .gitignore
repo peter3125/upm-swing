@@ -10,5 +10,5 @@ dist/
 nsis/upm-*.exe
 deps/
 .idea
-UPM.iml
+*.iml
 dist/

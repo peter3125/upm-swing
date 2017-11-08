@@ -42,8 +42,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import com._17od.upm.database.PasswordDatabase;
-import com._17od.upm.transport.Transport;
-import com._17od.upm.transport.TransportException;
 import com._17od.upm.util.Translator;
 
 
@@ -190,33 +188,6 @@ public class DatabasePropertiesDialog extends EscapeDialog {
             // Check the validity of the URL given by the user
             URL url = validateURL(remoteLocation);
             if (url != null) {
-
-                // Only allow supported protocols
-                if (Transport.isASupportedProtocol(url.getProtocol())) {
-
-                    // If the remote location has changed then upload the database
-                    if (!database.getDbOptions().getRemoteLocation().equals(remoteLocation)) {
-                        try {
-                            Transport transport = Transport.getTransportForURL(url);
-                            if (!authEntry.equals("")) {
-                                String userId = database.getAccount(authEntry).getUserId();
-                                String password = database.getAccount(authEntry).getPassword();
-                                transport.put(remoteLocation, database.getDatabaseFile(), userId, password);
-                            } else {
-                                transport.put(remoteLocation, database.getDatabaseFile());
-                            }
-                            canCloseWindow = true;
-                        } catch (TransportException e ){
-                            JOptionPane.showMessageDialog(parentFrame, e.getMessage(), Translator.translate("transportError"), JOptionPane.ERROR_MESSAGE);                            
-                        }
-                    } else {
-                        canCloseWindow = true;
-                    }
-
-                } else {
-                    JOptionPane.showMessageDialog(parentFrame, Translator.translate("unsupportedProtocol"), Translator.translate("invalidProtocol"), JOptionPane.ERROR_MESSAGE);
-                }
-
             } else {
                 // If we got here the the URL is invalid
                 JOptionPane.showMessageDialog(parentFrame, Translator.translate("givenURLIsInvalid"), Translator.translate("invalidURL"), JOptionPane.ERROR_MESSAGE);

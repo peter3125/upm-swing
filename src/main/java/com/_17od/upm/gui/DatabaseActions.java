@@ -51,8 +51,6 @@ import com._17od.upm.database.PasswordDatabase;
 import com._17od.upm.database.PasswordDatabasePersistence;
 import com._17od.upm.database.ProblemReadingDatabaseFile;
 import com._17od.upm.gui.MainWindow.ChangeDatabaseAction;
-import com._17od.upm.transport.Transport;
-import com._17od.upm.transport.TransportException;
 import com._17od.upm.util.FileChangedCallback;
 import com._17od.upm.util.FileMonitor;
 import com._17od.upm.util.Preferences;
@@ -153,7 +151,7 @@ public class DatabaseActions {
     }
 
 
-    public void changeMasterPassword() throws IOException, ProblemReadingDatabaseFile, CryptoException, PasswordDatabaseException, TransportException {
+    public void changeMasterPassword() throws IOException, ProblemReadingDatabaseFile, CryptoException, PasswordDatabaseException {
 
         if (getLatestVersionOfDatabase()) {
             //The first task is to get the current master password
@@ -423,7 +421,7 @@ public class DatabaseActions {
     }
 
 
-    public void deleteAccount() throws IOException, CryptoException, TransportException, ProblemReadingDatabaseFile, PasswordDatabaseException {
+    public void deleteAccount() throws IOException, CryptoException, ProblemReadingDatabaseFile, PasswordDatabaseException {
 
         if (getLatestVersionOfDatabase()) {
             SortedListModel listview = (SortedListModel) mainWindow.getAccountsListview().getModel();
@@ -446,7 +444,7 @@ public class DatabaseActions {
     }
 
 
-    public void addAccount() throws IOException, CryptoException, TransportException, ProblemReadingDatabaseFile, PasswordDatabaseException {
+    public void addAccount() throws IOException, CryptoException, ProblemReadingDatabaseFile, PasswordDatabaseException {
 
         if (getLatestVersionOfDatabase()) {
 
@@ -478,7 +476,7 @@ public class DatabaseActions {
     }
 
 
-    private boolean getLatestVersionOfDatabase() throws TransportException, ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
+    private boolean getLatestVersionOfDatabase() throws ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
         boolean latestVersionDownloaded = false;
 
         // Ensure we're working with the latest version of the database
@@ -513,7 +511,7 @@ public class DatabaseActions {
     }
 
 
-    public void editAccount(String accountName) throws TransportException,
+    public void editAccount(String accountName) throws
             ProblemReadingDatabaseFile, IOException, CryptoException,
             PasswordDatabaseException, InvalidPasswordException, UPMException {
 
@@ -651,64 +649,25 @@ public class DatabaseActions {
 
 
     public void showDatabaseProperties() throws ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
-        try {
-            if (getLatestVersionOfDatabase()) {
-                DatabasePropertiesDialog dbPropsDialog = new DatabasePropertiesDialog(mainWindow, getAccountNames(), database);
-                dbPropsDialog.pack();
-                dbPropsDialog.setLocationRelativeTo(mainWindow);
-                dbPropsDialog.show();
-                if (dbPropsDialog.getDatabaseNeedsSaving()) {
-                    saveDatabase();
-                }
-            }
-        } catch (TransportException e) {
-            int response = JOptionPane.showConfirmDialog(mainWindow, Translator.translate("problemRetrievingRemoteDB"), Translator.translate("detachDatabase"), JOptionPane.YES_NO_OPTION);
-            if (response == JOptionPane.YES_OPTION) {
-                database.getDbOptions().setRemoteLocation("");
-                database.getDbOptions().setAuthDBEntry("");
+        if (getLatestVersionOfDatabase()) {
+            DatabasePropertiesDialog dbPropsDialog = new DatabasePropertiesDialog(mainWindow, getAccountNames(), database);
+            dbPropsDialog.pack();
+            dbPropsDialog.setLocationRelativeTo(mainWindow);
+            dbPropsDialog.show();
+            if (dbPropsDialog.getDatabaseNeedsSaving()) {
                 saveDatabase();
             }
         }
     }
 
 
-    public void openDatabaseFromURL() throws TransportException, IOException, ProblemReadingDatabaseFile, CryptoException {
+    public void openDatabaseFromURL() throws IOException, ProblemReadingDatabaseFile, CryptoException {
 
         // Ask the user for the remote database location
         OpenDatabaseFromURLDialog openDBDialog = new OpenDatabaseFromURLDialog(mainWindow);
         openDBDialog.pack();
         openDBDialog.setLocationRelativeTo(mainWindow);
         openDBDialog.show();
-
-        if (openDBDialog.getOkClicked()) {
-            // Get the remote database options
-            String remoteLocation = openDBDialog.getUrlTextField().getText();
-            String username = openDBDialog.getUsernameTextField().getText();
-            String password = openDBDialog.getPasswordTextField().getText();
-
-            // Ask the user for a location to save the database file to
-            File saveDatabaseTo = getSaveAsFile(Translator.translate("saveDatabaseAs"));
-
-            if (saveDatabaseTo != null) {
-
-                // Download the database
-                Transport transport = Transport.getTransportForURL(new URL(remoteLocation));
-                File downloadedDatabaseFile = transport.getRemoteFile(remoteLocation, username, password);
-
-                // Delete the file is it already exists
-                if (saveDatabaseTo.exists()) {
-                    saveDatabaseTo.delete();
-                }
-
-                // Save the downloaded database file to the new location
-                Util.copyFile(downloadedDatabaseFile, saveDatabaseTo);
-
-                // Now open the downloaded database
-                openDatabase(saveDatabaseTo.getAbsolutePath());
-
-            }
-        }
-
     }
 
     public void reloadDatabase()
@@ -804,116 +763,9 @@ public class DatabaseActions {
         return reloadSuccessful;
     }
 
-    public boolean syncWithRemoteDatabase() throws TransportException, ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
+    public boolean syncWithRemoteDatabase() throws ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
 
-        boolean syncSuccessful = false;
-
-        try {
-            fileMonitor.pause();
-
-            mainWindow.getContentPane().setCursor(new Cursor(Cursor.WAIT_CURSOR));
-
-            // Get the remote database options
-            String remoteLocation = database.getDbOptions().getRemoteLocation();
-            String authDBEntry = database.getDbOptions().getAuthDBEntry();
-            String httpUsername = null;
-            String httpPassword = null;
-            if (!authDBEntry.equals("")) {
-                httpUsername = database.getAccount(authDBEntry).getUserId();
-                httpPassword = database.getAccount(authDBEntry).getPassword();
-            }
-
-            // Download the database that's already at the remote location
-            Transport transport = Transport.getTransportForURL(new URL(remoteLocation));
-            File remoteDatabaseFile = transport.getRemoteFile(remoteLocation, database.getDatabaseFile().getName(), httpUsername, httpPassword);
-
-            // Attempt to decrypt the database using the password the user entered
-            PasswordDatabase remoteDatabase = null;
-            char[] password = null;
-            boolean successfullyDecryptedDb = false;
-            try {
-                remoteDatabase = dbPers.load(remoteDatabaseFile);
-                successfullyDecryptedDb = true;
-            } catch (InvalidPasswordException e) {
-                // The password for the downloaded database is different to that of the open database
-                // (most likely the user changed the local database's master password)
-                boolean okClicked = false;
-                do {
-                    password = askUserForPassword(Translator.translate("enterPaswordForRemoteDB"));
-                    if (password == null) {
-                        okClicked = false;
-                    } else {
-                        okClicked = true;
-                        try {
-                            remoteDatabase = dbPers.load(remoteDatabaseFile, password);
-                            successfullyDecryptedDb = true;
-                        } catch (InvalidPasswordException invalidPassword) {
-                            JOptionPane.showMessageDialog(mainWindow, Translator.translate("incorrectPassword"));
-                        }
-                    }
-                } while (okClicked && !successfullyDecryptedDb);
-            }
-
-            /* If the local database revision > remote database version => upload local database
-               If the local database revision < remote database version => replace local database with remote database
-               If the local database revision = remote database version => do nothing */
-            if (successfullyDecryptedDb) {
-                if (database.getRevision() > remoteDatabase.getRevision()) {
-                    transport.delete(remoteLocation, database.getDatabaseFile().getName(), httpUsername, httpPassword);
-                    transport.put(remoteLocation, database.getDatabaseFile(), httpUsername, httpPassword);
-                    syncSuccessful = true;
-                } else if (database.getRevision() < remoteDatabase.getRevision()) {
-                    Util.copyFile(remoteDatabaseFile, database.getDatabaseFile());
-                    database = new PasswordDatabase(
-                            remoteDatabase.getRevisionObj(),
-                            remoteDatabase.getDbOptions(),
-                            remoteDatabase.getAccountsHash(),
-                            database.getDatabaseFile());
-                    doOpenDatabaseActions();
-                    syncSuccessful = true;
-                } else {
-                    syncSuccessful = true;
-                }
-
-                if (syncSuccessful) {
-                    setLocalDatabaseDirty(false);
-
-                    // Create a thread that will mark the database dirty after
-                    // a short period. Without this the database would remain
-                    // in a synced state until the user makes a change. The
-                    // longer we wait before syncing up the greater chance there
-                    // is that we'll miss changes made elsewhere and end up
-                    // with a conflicting version of the database.
-                    final long dirtyThreadStartTime = System.currentTimeMillis();
-                    runSetDBDirtyThread = true;
-                    Thread setDBDirtyThread = new Thread(new Runnable() {
-                        public void run() {
-                            while (runSetDBDirtyThread) {
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e1) {}
-                                long currentTime = System.currentTimeMillis();
-                                if (currentTime - dirtyThreadStartTime > 5 * 60 * 1000) {
-                                    LOG.info("SetDBDirtyThread setting database dirty");
-                                    setLocalDatabaseDirty(true);
-                                    runSetDBDirtyThread = false;
-                                }
-                            }
-                        }
-                    });
-                    setDBDirtyThread.setName("SetDBDirty");
-                    setDBDirtyThread.start();
-                    LOG.info("Started SetDBDirtyThread thread");
-
-                }
-            }
-
-        } finally {
-            mainWindow.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            fileMonitor.start();
-        }
-
-        return syncSuccessful;
+        return true;
 
     }
 
@@ -942,7 +794,7 @@ public class DatabaseActions {
     }
 
 
-    public void importAccounts() throws TransportException, ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
+    public void importAccounts() throws ProblemReadingDatabaseFile, IOException, CryptoException, PasswordDatabaseException {
         if (getLatestVersionOfDatabase()) {
             // Prompt for the file to import
             JFileChooser fc = new JFileChooser();

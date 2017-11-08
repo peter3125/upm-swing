@@ -29,18 +29,7 @@ public abstract class PlatformSpecificCode {
 
 
     public static PlatformSpecificCode getInstance() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        PlatformSpecificCode retVal = null;
-        
-        //Use reflection to create the platform specific code because the chances are it won't compile
-        //on other platforms (causing this class to also fail compilation)
-        if (isMAC()) {
-            Class clazz = Class.forName("com._17od.upm.platformspecific.mac.MACOSXSpecificCode");
-            retVal = (PlatformSpecificCode) clazz.newInstance();
-        } else {
-            retVal = new NonPlatformSpecificCode();
-        }
-        
-        return retVal;
+        return new NonPlatformSpecificCode();
     }
     
     
@@ -53,3 +42,4 @@ public abstract class PlatformSpecificCode {
 	}
 
 }
+

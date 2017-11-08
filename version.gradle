@@ -16,7 +16,8 @@ ext{
     apacheHttpclientVersion = '4.5.2'
     commonsLoggingVersion = '1.2'
     commonsValidatorVersion = '1.6'
-    javaCSVVersion = '2.1'
+    javaCSVVersion = '2.0'
+    commonsHttpClientVersion = '4.5.3'
 
     junitVersion = '4.12'
 
