@@ -20,6 +20,7 @@
  */
 package com._17od.upm.gui;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -53,6 +54,7 @@ public class EscapeDialog extends JDialog {
             }
         };
         JRootPane rootPane = new JRootPane();
+        rootPane.setFont(new Font("Tahoma", Font.PLAIN, 24));
         KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
         rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
         return rootPane;

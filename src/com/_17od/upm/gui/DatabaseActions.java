@@ -20,8 +20,7 @@
  */
 package com._17od.upm.gui;
 
-import java.awt.Color;
-import java.awt.Cursor;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -106,6 +105,7 @@ public class DatabaseActions {
             JPasswordField confirmedMasterPassword = new JPasswordField("");
             JOptionPane pane = new JOptionPane(new Object[] {Translator.translate("enterMasterPassword"), masterPassword, Translator.translate("confirmation"), confirmedMasterPassword}, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
             JDialog dialog = pane.createDialog(mainWindow, Translator.translate("masterPassword"));
+            dialog.setFont(new Font("Tahoma", Font.PLAIN, 24));
             dialog.addWindowFocusListener(new WindowAdapter() {
                 public void windowGainedFocus(WindowEvent e) {
                     masterPassword.requestFocusInWindow();

@@ -20,16 +20,10 @@
  */
 package com._17od.upm.gui;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -76,10 +70,7 @@ import com._17od.upm.platformspecific.PlatformSpecificCode;
 import com._17od.upm.util.Preferences;
 import com._17od.upm.util.Translator;
 import com._17od.upm.util.Util;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -160,6 +151,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		super(title);
 
 		setIconImage(Util.loadImage("upm.gif").getImage());
+        setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -187,8 +179,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		// Display the window.
 		pack();
 		setLocationRelativeTo(null);
-		boolean restore = Preferences.get(Preferences.ApplicationOptions.REMEMBER_WINDOW_POSITION, "false")
-				.equals("true");
+		boolean restore = Preferences.get(Preferences.ApplicationOptions.REMEMBER_WINDOW_POSITION, "true")
+                            .equals("true");
 		if (restore) {
 			restoreWindowBounds();
 		}
@@ -241,6 +233,7 @@ public class MainWindow extends JFrame implements ActionListener {
 					} else {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 						AppWindow = new MainWindow(applicationName);
+						AppWindow.setFont(new Font("Tahoma", Font.PLAIN, 24));
 					}
 
 				} catch (Exception e) {
@@ -259,6 +252,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		// Create the menubar
 		setJMenuBar(createMenuBar());
+		setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -318,6 +312,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				dbActions.filter();
 			}
 		});
+        searchField.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		searchField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -450,6 +445,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		databaseFileChangedPanel.setLayout(new BoxLayout(databaseFileChangedPanel, BoxLayout.X_AXIS));
 		databaseFileChangedPanel.setBackground(new Color(249, 172, 60));
 		databaseFileChangedPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		databaseFileChangedPanel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		JLabel fileChangedLabel = new JLabel("Database file changed");
 		fileChangedLabel.setAlignmentX(LEFT_ALIGNMENT);
 		databaseFileChangedPanel.add(fileChangedLabel);
@@ -625,6 +621,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenuBar createMenuBar() {
 
 		JMenuBar menuBar = new JMenuBar();
+        menuBar.setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		databaseMenu = new JMenu(Translator.translate("databaseMenu"));
 		databaseMenu.setMnemonic(KeyEvent.VK_D);

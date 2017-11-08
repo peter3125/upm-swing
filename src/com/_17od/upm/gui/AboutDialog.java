@@ -63,7 +63,7 @@ public class AboutDialog extends EscapeDialog {
         jTextArea.setText(aboutText.toString());
         jTextArea.setAlignmentX(Component.CENTER_ALIGNMENT);
         jTextArea.setEditable(false);
-        jTextArea.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        jTextArea.setFont(new Font("Tahoma", Font.PLAIN, 24));
         jTextArea.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         panel.add(jTextArea);
         panel.add(new JSeparator());

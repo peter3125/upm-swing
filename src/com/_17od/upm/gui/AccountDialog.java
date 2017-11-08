@@ -20,12 +20,7 @@
  */
 package com._17od.upm.gui;
 
-import java.awt.Container;
-import java.awt.Desktop;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -155,6 +150,7 @@ public class AccountDialog extends EscapeDialog {
 		GridBagConstraints c = new GridBagConstraints();
 
 		Container container = getContentPane();
+		container.setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		// The AccountName Row
 		JLabel accountLabel = new JLabel(Translator.translate("account"));

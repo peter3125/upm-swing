@@ -20,12 +20,7 @@
  */
 package com._17od.upm.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -58,6 +53,7 @@ public class OpenDatabaseFromURLDialog extends EscapeDialog {
         super(frame, Translator.translate("openDatabaseFromURL"), true);
 
         Container container = getContentPane();
+        container.setFont(new Font("Tahoma", Font.PLAIN, 24));
 
         // Create a pane with an empty border for spacing
         Border emptyBorder = BorderFactory.createEmptyBorder(2, 5, 5, 5);
