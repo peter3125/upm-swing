@@ -11,3 +11,4 @@ nsis/upm-*.exe
 deps/
 .idea
 UPM.iml
+dist/
