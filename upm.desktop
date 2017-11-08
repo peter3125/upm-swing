@@ -1,0 +1,14 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Universal Password Manager
+GenericName=Universal Password Manager
+Comment=Universal Password Manager
+Exec=/home/peter/apps/passwords/upm.sh
+Terminal=false
+MimeType=text/plain;
+Categories=Security;Development;
+StartupNotify=true
+Actions=Window;
+Icon=/home/peter/apps/passwords/upm.png
