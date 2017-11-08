@@ -62,11 +62,6 @@ public class OptionsDialog extends EscapeDialog {
 	private JCheckBox appAlwaysonTopCheckbox;
 	private JLabel accountPasswordLengthLabel;
 	private JTextField accountPasswordLength;
-	private JTextField httpProxyHost;
-	private JTextField httpProxyPort;
-	private JTextField httpProxyUsername;
-	private JPasswordField httpProxyPassword;
-	private JCheckBox hidePasswordCheckbox;
 	private JCheckBox databaseAutoLockCheckbox;
 	private JTextField databaseAutoLockTime;
 	private JCheckBox acceptSelfSignedCertsCheckbox;
@@ -308,183 +303,6 @@ public class OptionsDialog extends EscapeDialog {
 		// Some spacing
 		emptyBorderPanel.add(Box.createVerticalGlue());
 
-		// ******************
-		// *** The HTTPS Section
-		// ******************
-		// Create a pane with an title etched border
-		Border httpsEtchedTitleBorder = BorderFactory.createTitledBorder(etchedBorder, " HTTPS ");
-		final JPanel httpsPanel = new JPanel(new GridBagLayout());
-		httpsPanel.setBorder(httpsEtchedTitleBorder);
-		emptyBorderPanel.add(httpsPanel);
-
-		// The "Accept Self Sigend Certificates" checkbox row
-		Boolean acceptSelfSignedCerts = new Boolean(
-				Preferences.get(Preferences.ApplicationOptions.HTTPS_ACCEPT_SELFSIGNED_CERTS, "false"));
-		acceptSelfSignedCertsCheckbox = new JCheckBox(Translator.translate("acceptSelfSignedCerts"),
-				acceptSelfSignedCerts.booleanValue());
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 2, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		httpsPanel.add(acceptSelfSignedCertsCheckbox, c);
-
-		// ******************
-		// *** The Proxy Section
-		// ******************
-		// Create a pane with an title etched border
-		Border proxyEtchedTitleBorder = BorderFactory.createTitledBorder(etchedBorder,
-				' ' + Translator.translate("httpProxy") + ' ');
-		final JPanel proxyPanel = new JPanel(new GridBagLayout());
-		proxyPanel.setBorder(proxyEtchedTitleBorder);
-		emptyBorderPanel.add(proxyPanel);
-
-		// The "Enable Proxy" row
-		Boolean proxyEnabled = new Boolean(Preferences.get(Preferences.ApplicationOptions.HTTP_PROXY_ENABLED));
-		enableProxyCheckbox = new JCheckBox(Translator.translate("enableProxy"), proxyEnabled.booleanValue());
-		enableProxyCheckbox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					enableProxyComponents(true);
-				} else {
-					enableProxyComponents(false);
-				}
-			}
-		});
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 2, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(enableProxyCheckbox, c);
-
-		// The "HTTP Proxy" label row
-		proxyLabel = new JLabel(Translator.translate("httpProxy"));
-		c.gridx = 0;
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 3, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(proxyLabel, c);
-
-		// The "HTTP Proxy Port" label
-		proxyPortLabel = new JLabel(Translator.translate("port"));
-		c.gridx = 1;
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 3, 5);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(proxyPortLabel, c);
-
-		// The "HTTP Proxy" field row
-		httpProxyHost = new JTextField(Preferences.get(Preferences.ApplicationOptions.HTTP_PROXY_HOST), 20);
-		c.gridx = 0;
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		proxyPanel.add(httpProxyHost, c);
-
-		httpProxyPort = new JTextField(Preferences.get(Preferences.ApplicationOptions.HTTP_PROXY_PORT), 6);
-		c.gridx = 1;
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 5);
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		proxyPanel.add(httpProxyPort, c);
-
-		// The "HTTP Proxy Username" label row
-		proxyUsernameLabel = new JLabel(Translator.translate("httpProxyUsername"));
-		c.gridx = 0;
-		c.gridy = 3;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 3, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(proxyUsernameLabel, c);
-
-		// The "HTTP Proxy Username" field row
-		httpProxyUsername = new JTextField(Preferences.get(Preferences.ApplicationOptions.HTTP_PROXY_USERNAME), 20);
-		c.gridx = 0;
-		c.gridy = 4;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 5);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		proxyPanel.add(httpProxyUsername, c);
-
-		// The "HTTP Proxy Password" label row
-		proxyPasswordLabel = new JLabel(Translator.translate("httpProxyPassword"));
-		c.gridx = 0;
-		c.gridy = 5;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 3, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(proxyPasswordLabel, c);
-
-		// The "HTTP Proxy Password" field row
-		String encodedPassword = Preferences.get(Preferences.ApplicationOptions.HTTP_PROXY_PASSWORD);
-		String decodedPassword = null;
-		if (encodedPassword != null) {
-			decodedPassword = new String(Base64.decodeBase64(encodedPassword.getBytes()));
-		}
-		httpProxyPassword = new JPasswordField(decodedPassword, 20);
-		c.gridx = 0;
-		c.gridy = 6;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 5);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		proxyPanel.add(httpProxyPassword, c);
-
-		hidePasswordCheckbox = new JCheckBox(Translator.translate("hide"), true);
-		defaultEchoChar = httpProxyPassword.getEchoChar();
-		hidePasswordCheckbox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					httpProxyPassword.setEchoChar(defaultEchoChar);
-				} else {
-					httpProxyPassword.setEchoChar((char) 0);
-				}
-			}
-		});
-		c.gridx = 1;
-		c.gridy = 6;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 0);
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(hidePasswordCheckbox, c);
-
 		// Some spacing
 		emptyBorderPanel.add(Box.createVerticalGlue());
 
@@ -509,20 +327,6 @@ public class OptionsDialog extends EscapeDialog {
 			}
 		});
 		buttonPanel.add(cancelButton);
-
-		enableProxyComponents(proxyEnabled.booleanValue());
-	}
-
-	private void enableProxyComponents(boolean enable) {
-		httpProxyHost.setEnabled(enable);
-		httpProxyPort.setEnabled(enable);
-		httpProxyUsername.setEnabled(enable);
-		httpProxyPassword.setEnabled(enable);
-		proxyLabel.setEnabled(enable);
-		proxyPortLabel.setEnabled(enable);
-		proxyUsernameLabel.setEnabled(enable);
-		proxyPasswordLabel.setEnabled(enable);
-		hidePasswordCheckbox.setEnabled(enable);
 	}
 
 	public boolean okClicked() {
@@ -564,16 +368,6 @@ public class OptionsDialog extends EscapeDialog {
 					String.valueOf(databaseAutoLockCheckbox.isSelected()));
 			Preferences.set(Preferences.ApplicationOptions.DATABASE_AUTO_LOCK_TIME, databaseAutoLockTime.getText());
 			Preferences.set(Preferences.ApplicationOptions.ACCOUNT_PASSWORD_LENGTH, accountPasswordLength.getText());
-			Preferences.set(Preferences.ApplicationOptions.HTTPS_ACCEPT_SELFSIGNED_CERTS,
-					String.valueOf(acceptSelfSignedCertsCheckbox.isSelected()));
-			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_HOST, httpProxyHost.getText());
-			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_PORT, httpProxyPort.getText());
-			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_USERNAME, httpProxyUsername.getText());
-			String encodedPassword = new String(
-					Base64.encodeBase64(new String(httpProxyPassword.getPassword()).getBytes()));
-			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_PASSWORD, encodedPassword);
-			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_ENABLED,
-					String.valueOf(enableProxyCheckbox.isSelected()));
 
 			MainWindow.setAppAlwaysonTop(appAlwaysonTopCheckbox.isSelected());
 

@@ -50,13 +50,6 @@ public class Preferences {
         public static final String DATABASE_AUTO_LOCK_TIME = "database.auto_lock_time";
         public static final String REMEMBER_WINDOW_POSITION="window.store_position";
 
-        public static final String HTTP_PROXY_ENABLED="http.proxy.enabled";
-        public static final String HTTP_PROXY_HOST="http.proxy.host";
-        public static final String HTTP_PROXY_PORT="http.proxy.port";
-        public static final String HTTP_PROXY_USERNAME="http.proxy.username";
-        public static final String HTTP_PROXY_PASSWORD="http.proxy.password";
-        public static final String HTTPS_ACCEPT_SELFSIGNED_CERTS="https.accept.selfsigned.certs";
-        
         public static final String XLOC = "window.location.x";
         public static final String YLOC = "window.location.y";
         public static final String WWIDTH = "window.width";
