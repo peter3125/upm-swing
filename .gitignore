@@ -13,4 +13,6 @@ deps/
 *.iml
 dist/
 pd
+.gradle
+out/
 
