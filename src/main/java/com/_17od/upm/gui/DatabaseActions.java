@@ -248,12 +248,10 @@ public class DatabaseActions {
         mainWindow.getEditAccountButton().setEnabled(false);
         mainWindow.getCopyUsernameButton().setEnabled(false);
         mainWindow.getCopyPasswordButton().setEnabled(false);
-        mainWindow.getLaunchURLButton().setEnabled(false);
         mainWindow.getDeleteAccountButton().setEnabled(false);
         mainWindow.getEditAccountMenuItem().setEnabled(false);
         mainWindow.getCopyUsernameMenuItem().setEnabled(false);
         mainWindow.getCopyPasswordMenuItem().setEnabled(false);
-        mainWindow.getLaunchURLMenuItem().setEnabled(false);
         mainWindow.getDeleteAccountMenuItem().setEnabled(false);
         mainWindow.getViewAccountMenuItem().setEnabled(false);
     }
@@ -594,24 +592,20 @@ public class DatabaseActions {
             mainWindow.getEditAccountButton().setEnabled(false);
             mainWindow.getCopyUsernameButton().setEnabled(false);
             mainWindow.getCopyPasswordButton().setEnabled(false);
-            mainWindow.getLaunchURLButton().setEnabled(false);
             mainWindow.getDeleteAccountButton().setEnabled(false);
             mainWindow.getEditAccountMenuItem().setEnabled(false);
             mainWindow.getCopyUsernameMenuItem().setEnabled(false);
             mainWindow.getCopyPasswordMenuItem().setEnabled(false);
-            mainWindow.getLaunchURLMenuItem().setEnabled(false);
             mainWindow.getDeleteAccountMenuItem().setEnabled(false);
             mainWindow.getViewAccountMenuItem().setEnabled(false);
         } else {
             mainWindow.getEditAccountButton().setEnabled(true);
             mainWindow.getCopyUsernameButton().setEnabled(true);
             mainWindow.getCopyPasswordButton().setEnabled(true);
-            mainWindow.getLaunchURLButton().setEnabled(true);
             mainWindow.getDeleteAccountButton().setEnabled(true);
             mainWindow.getEditAccountMenuItem().setEnabled(true);
             mainWindow.getCopyUsernameMenuItem().setEnabled(true);
             mainWindow.getCopyPasswordMenuItem().setEnabled(true);
-            mainWindow.getLaunchURLMenuItem().setEnabled(true);
             mainWindow.getDeleteAccountMenuItem().setEnabled(true);
             mainWindow.getViewAccountMenuItem().setEnabled(true);
         }

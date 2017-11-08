@@ -69,7 +69,6 @@ import com._17od.upm.platformspecific.PlatformSpecificCode;
 import com._17od.upm.util.Preferences;
 import com._17od.upm.util.Translator;
 import com._17od.upm.util.Util;
-import org.apache.commons.validator.routines.UrlValidator;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -86,7 +85,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	public static final String NEW_DATABASE_TXT = "newDatabaseMenuItem";
 	public static final String OPEN_DATABASE_TXT = "openDatabaseMenuItem";
-	public static final String OPEN_DATABASE_FROM_URL_TXT = "openDatabaseFromURLMenuItem";
 	public static final String SYNC_DATABASE_TXT = "syncWithRemoteDatabaseMenuItem";
 	public static final String CHANGE_MASTER_PASSWORD_TXT = "changeMasterPasswordMenuItem";
 	public static final String DATABASE_PROPERTIES_TXT = "databasePropertiesMenuItem";
@@ -96,7 +94,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	public static final String VIEW_ACCOUNT_TXT = "viewAccountMenuItem";
 	public static final String COPY_USERNAME_TXT = "copyUsernameMenuItem";
 	public static final String COPY_PASSWORD_TXT = "copyPasswordMenuItem";
-	public static final String LAUNCH_URL_TXT = "launchURLMenuItem";
 	public static final String OPTIONS_TXT = "optionsMenuItem";
 	public static final String ABOUT_TXT = "aboutMenuItem";
 	public static final String RESET_SEARCH_TXT = "resetSearchMenuItem";
@@ -110,7 +107,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JButton deleteAccountButton;
 	private JButton copyUsernameButton;
 	private JButton copyPasswordButton;
-	private JButton launchURLButton;
 	private JButton optionsButton;
 	private JButton syncDatabaseButton;
 	private JTextField searchField;
@@ -120,7 +116,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenu databaseMenu;
 	private JMenuItem newDatabaseMenuItem;
 	private JMenuItem openDatabaseMenuItem;
-	private JMenuItem openDatabaseFromURLMenuItem;
 	private JMenuItem syncWithRemoteDatabaseMenuItem;
 	private JMenuItem changeMasterPasswordMenuItem;
 	private JMenuItem databasePropertiesMenuItem;
@@ -134,7 +129,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenuItem viewAccountMenuItem;
 	private JMenuItem copyUsernameMenuItem;
 	private JMenuItem copyPasswordMenuItem;
-	private JMenuItem launchURLMenuItem;
 	private JMenuItem exportMenuItem;
 	private JMenuItem importMenuItem;
 
@@ -550,45 +544,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		copyPasswordButton.setEnabled(false);
 		toolbar.add(copyPasswordButton);
 
-		// The "Launch URL" button
-		launchURLButton = new JButton();
-		launchURLButton.setToolTipText(Translator.translate(LAUNCH_URL_TXT));
-		launchURLButton.setIcon(Util.loadImage("launch_URL.gif"));
-		launchURLButton.setDisabledIcon(Util.loadImage("launch_URL_d.gif"));
-		;
-		launchURLButton.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				AccountInformation accInfo = dbActions.getSelectedAccount();
-				String uRl = accInfo.getUrl();
-
-				// Check if the selected url is null or emty and inform the user
-				// via JoptioPane message
-				if ((uRl == null) || (uRl.length() == 0)) {
-					JOptionPane.showMessageDialog(launchURLButton.getParent(),
-							Translator.translate("EmptyUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
-
-					// Check if the selected url is a valid formated url(via
-					// urlIsValid() method) and inform the user via JoptioPane
-					// message
-				} else if (!(urlIsValid(uRl))) {
-					JOptionPane.showMessageDialog(launchURLButton.getParent(),
-							Translator.translate("InvalidUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
-
-					// Call the method LaunchSelectedURL() using the selected
-					// url as input
-				} else {
-					LaunchSelectedURL(uRl);
-
-				}
-			}
-		});
-		launchURLButton.setEnabled(false);
-		toolbar.add(launchURLButton);
-
 		toolbar.addSeparator();
 
 		// The "Option" button
@@ -640,13 +595,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		databaseMenu.add(openDatabaseMenuItem);
 		openDatabaseMenuItem.addActionListener(this);
 		openDatabaseMenuItem.setActionCommand(OPEN_DATABASE_TXT);
-
-		openDatabaseFromURLMenuItem = new JMenuItem(Translator.translate(OPEN_DATABASE_FROM_URL_TXT), KeyEvent.VK_L);
-		openDatabaseFromURLMenuItem.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		databaseMenu.add(openDatabaseFromURLMenuItem);
-		openDatabaseFromURLMenuItem.addActionListener(this);
-		openDatabaseFromURLMenuItem.setActionCommand(OPEN_DATABASE_FROM_URL_TXT);
 
 		databaseMenu.addSeparator();
 
@@ -749,44 +697,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		copyPasswordMenuItem.setEnabled(false);
 		copyPasswordMenuItem.setActionCommand(COPY_PASSWORD_TXT);
 
-		launchURLMenuItem = new JMenuItem(Translator.translate(LAUNCH_URL_TXT), KeyEvent.VK_B);
-		launchURLMenuItem.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		accountMenu.add(launchURLMenuItem);
-		launchURLMenuItem.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				AccountInformation accInfo = dbActions.getSelectedAccount();
-				String uRl = accInfo.getUrl();
-
-				// Check if the selected url is null or emty and inform the user
-				// via JoptioPane message
-				if ((uRl == null) || (uRl.length() == 0)) {
-					JOptionPane.showMessageDialog(accountMenu.getParent().getParent(),
-							Translator.translate("EmptyUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
-
-					// Check if the selected url is a valid formated url(via
-					// urlIsValid() method) and inform the user via JoptioPane
-					// message
-				} else if (!(urlIsValid(uRl))) {
-					JOptionPane.showMessageDialog(accountMenu.getParent().getParent(),
-							Translator.translate("InvalidUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
-
-					// Call the method LaunchSelectedURL() using the selected
-					// url as input
-				} else {
-					LaunchSelectedURL(uRl);
-
-				}
-			}
-		});
-
-		launchURLMenuItem.setEnabled(false);
-		launchURLMenuItem.setActionCommand(LAUNCH_URL_TXT);
-
 		exitMenuItem = new JMenuItem(Translator.translate(EXIT_TXT), KeyEvent.VK_X);
 		exitMenuItem.setAccelerator(
 				KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -833,19 +743,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		StringSelection stringSelection = new StringSelection(s);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, stringSelection);
-	}
-
-	// Use com.apache.commons.validator library in order to check the
-	// validity(proper formating, e.x http://www.url.com) of the given url
-	private boolean urlIsValid(String urL) {
-
-		UrlValidator urlValidator = new UrlValidator();
-		if (urlValidator.isValid(urL)) {
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 	// Method that get(as input) the selected Account URL and open this URL via
@@ -953,10 +850,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		return copyPasswordButton;
 	}
 
-	public JButton getLaunchURLButton() {
-		return launchURLButton;
-	}
-
 	public JButton getCopyUsernameButton() {
 		return copyUsernameButton;
 	}
@@ -1001,10 +894,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		return copyPasswordMenuItem;
 	}
 
-	public JMenuItem getLaunchURLMenuItem() {
-		return launchURLMenuItem;
-	}
-
 	public JMenuItem getCopyUsernameMenuItem() {
 		return copyUsernameMenuItem;
 	}
@@ -1044,8 +933,6 @@ public class MainWindow extends JFrame implements ActionListener {
 				dbActions.newDatabase();
 			} else if (event.getActionCommand() == MainWindow.OPEN_DATABASE_TXT) {
 				dbActions.openDatabase();
-			} else if (event.getActionCommand() == MainWindow.OPEN_DATABASE_FROM_URL_TXT) {
-				dbActions.openDatabaseFromURL();
 			} else if (event.getActionCommand() == MainWindow.SYNC_DATABASE_TXT) {
 				dbActions.syncWithRemoteDatabase();
 			} else if (event.getActionCommand() == MainWindow.ADD_ACCOUNT_TXT) {
@@ -1111,7 +998,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		databaseMenu.setText(Translator.translate("databaseMenu"));
 		newDatabaseMenuItem.setText(Translator.translate(NEW_DATABASE_TXT));
 		openDatabaseMenuItem.setText(Translator.translate(OPEN_DATABASE_TXT));
-		openDatabaseFromURLMenuItem.setText(Translator.translate(OPEN_DATABASE_FROM_URL_TXT));
 		syncWithRemoteDatabaseMenuItem.setText(Translator.translate(SYNC_DATABASE_TXT));
 		changeMasterPasswordMenuItem.setText(Translator.translate(CHANGE_MASTER_PASSWORD_TXT));
 		databasePropertiesMenuItem.setText(Translator.translate(DATABASE_PROPERTIES_TXT));
@@ -1122,7 +1008,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		viewAccountMenuItem.setText(Translator.translate(VIEW_ACCOUNT_TXT));
 		copyUsernameMenuItem.setText(Translator.translate(COPY_USERNAME_TXT));
 		copyPasswordMenuItem.setText(Translator.translate(COPY_PASSWORD_TXT));
-		launchURLMenuItem.setText(Translator.translate(LAUNCH_URL_TXT));
 		exitMenuItem.setText(Translator.translate(EXIT_TXT));
 		aboutMenuItem.setText(Translator.translate(ABOUT_TXT));
 		exportMenuItem.setText(Translator.translate(EXPORT_TXT));
@@ -1140,7 +1025,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		deleteAccountButton.setToolTipText(Translator.translate(DELETE_ACCOUNT_TXT));
 		copyUsernameButton.setToolTipText(Translator.translate(COPY_USERNAME_TXT));
 		copyPasswordButton.setToolTipText(Translator.translate(COPY_PASSWORD_TXT));
-		launchURLButton.setToolTipText(Translator.translate(LAUNCH_URL_TXT));
 		optionsButton.setToolTipText(Translator.translate(OPTIONS_TXT));
 		syncDatabaseButton.setToolTipText(Translator.translate(SYNC_DATABASE_TXT));
 		resetSearchButton.setToolTipText(Translator.translate(RESET_SEARCH_TXT));
