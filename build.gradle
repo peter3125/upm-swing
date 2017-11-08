@@ -44,6 +44,8 @@ jar {
 task setup(type: Copy) {
     dependsOn build
 
+    delete "./dist"
+
     into './dist'
     from configurations.runtime
     from jar
@@ -51,4 +53,5 @@ task setup(type: Copy) {
     from(new File(project.rootDir.toString() + '/ubuntu/encrypt.sh'))
     from(new File(project.rootDir.toString() + '/ubuntu/upm.desktop'))
     from(new File(project.rootDir.toString() + '/ubuntu/upm.sh'))
+    from(new File(project.rootDir.toString() + '/ubuntu/images/128x128/upm.png'))
 }

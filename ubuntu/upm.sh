@@ -1,8 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$JAVA_HOME" == "" ]; then
-  echo "JAVA_HOME not set"
-  exit 1
+  JAVA_HOME=/home/peter/apps/jdk1.8.0_144
 fi
 
 UPM_HOME=`dirname "$0"`
