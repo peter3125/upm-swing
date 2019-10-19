@@ -12,12 +12,12 @@ ext{
     upmVersion = getVersionName()
 
     bcprov = '1.46'
-    commonsCodecVersion = '1.10'
-    apacheHttpclientVersion = '4.5.2'
+    commonsCodecVersion = '1.11'
+    apacheHttpclientVersion = '4.5.6'
     commonsLoggingVersion = '1.2'
     commonsValidatorVersion = '1.6'
     javaCSVVersion = '2.0'
-    commonsHttpClientVersion = '4.5.3'
+    commonsHttpClientVersion = '4.5.10'
 
     junitVersion = '4.12'
 
