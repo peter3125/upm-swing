@@ -176,6 +176,8 @@ public class MainWindow extends JFrame implements ActionListener {
                             .equals("true");
 		if (restore) {
 			restoreWindowBounds();
+		} else {
+			this.setBounds(10, 10, 768, 512);
 		}
 		Boolean appAlwaysonTop = new Boolean(
 				Preferences.get(Preferences.ApplicationOptions.MAINWINDOW_ALWAYS_ON_TOP, "false"));
