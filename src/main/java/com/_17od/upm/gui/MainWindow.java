@@ -145,7 +145,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		super(title);
 
 		setIconImage(Util.loadImage("upm.gif").getImage());
-        setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -227,7 +226,6 @@ public class MainWindow extends JFrame implements ActionListener {
 					} else {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 						AppWindow = new MainWindow(applicationName);
-						AppWindow.setFont(new Font("Tahoma", Font.PLAIN, 24));
 					}
 
 				} catch (Exception e) {
@@ -246,7 +244,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		// Create the menubar
 		setJMenuBar(createMenuBar());
-		setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -306,7 +303,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				dbActions.filter();
 			}
 		});
-        searchField.setFont(new Font("Tahoma", Font.PLAIN, 24));
+
 		searchField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -439,7 +436,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		databaseFileChangedPanel.setLayout(new BoxLayout(databaseFileChangedPanel, BoxLayout.X_AXIS));
 		databaseFileChangedPanel.setBackground(new Color(249, 172, 60));
 		databaseFileChangedPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		databaseFileChangedPanel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		JLabel fileChangedLabel = new JLabel("Database file changed");
 		fileChangedLabel.setAlignmentX(LEFT_ALIGNMENT);
 		databaseFileChangedPanel.add(fileChangedLabel);
@@ -576,7 +572,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenuBar createMenuBar() {
 
 		JMenuBar menuBar = new JMenuBar();
-        menuBar.setFont(new Font("Tahoma", Font.PLAIN, 24));
 
 		databaseMenu = new JMenu(Translator.translate("databaseMenu"));
 		databaseMenu.setMnemonic(KeyEvent.VK_D);
